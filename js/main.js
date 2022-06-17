@@ -53,6 +53,7 @@ const getRandomLengthArray = (array) => {
 //получить случайный элемент массива
 const getRandomValueFromArray = (array) => array[getRandomPositiveInteger(1, array.length - 1)];
 
+//создать объявление
 const createRentalAdNearby = () => {
   const latitude = getRandomPositiveFloat(LATMIN, LATMAX);
   const longitude = getRandomPositiveFloat(LNGMIN, LNGMAX);
@@ -81,5 +82,7 @@ const createRentalAdNearby = () => {
   };
 };
 
-const createRentalAds = () => Array.from({length: NUMBEROFRENTALAD}, createRentalAdNearby);
+//создание n-количества объявлений
+const createRentalAds = (number) => Array.from({length: number}, createRentalAdNearby);
 
+createRentalAds(NUMBEROFRENTALAD);
