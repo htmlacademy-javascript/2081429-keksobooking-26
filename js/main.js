@@ -81,4 +81,5 @@ const createRentalAdNearby = () => {
   };
 };
 
-const rentalAds = Array.from({length: NUMBEROFRENTALAD}, createRentalAdNearby);
+const createRentalAds = () => Array.from({length: NUMBEROFRENTALAD}, createRentalAdNearby);
+
