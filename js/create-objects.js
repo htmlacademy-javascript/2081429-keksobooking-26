@@ -1,7 +1,4 @@
-import {getRandomPositiveInteger} from './random-functions.js';
-import {getRandomPositiveFloat} from './random-functions.js';
-import {getRandomLengthArray} from './random-functions.js';
-import {getRandomValueFromArray} from './random-functions.js';
+import {getRandomPositiveInteger, getRandomPositiveFloat, getRandomLengthArray, getRandomValueFromArray} from './random-functions.js';
 
 const ROOMS_MAX = 4;
 const GUESTS_MAX = 8;
