@@ -10,8 +10,17 @@ const ASSOCIATED_TYPES = {
 
 //создание строки по заселению в нужном формате
 const createCapacitySentence = (roomNumber, guestNumber) => {
-  const room = (roomNumber % 10 !== 1) ? ' комнаты ' : ' комната ';
-  const guest = (guestNumber % 10 !== 1) ? ' гостей' : ' гостя';
+  let room = ' комнат ';
+
+  if ((roomNumber > 10) && (roomNumber < 20)) {
+    room = ' комнат ';
+  } else if (roomNumber % 10 === 1) {
+    room = ' комната ';
+  } else if ((roomNumber % 10 > 1) && (roomNumber % 10 < 5)) {
+    room = ' комнаты ';
+  }
+
+  const guest = ((guestNumber % 10 !== 1) || (guestNumber === 11)) ? ' гостей' : ' гостя';
 
   return `${roomNumber + room  }для ${  guestNumber  }${guest}`;
 };
@@ -33,12 +42,15 @@ const showRentalAdFeatures = (element, features) => {
 //функция для добавления фото в галерею
 const createPhotosGallery = (element, photos) => {
   const photosGallery = element.querySelector('.popup__photos');
+  element.querySelector('.popup__photo').remove();
 
   for (const photo of photos) {
     const img = document.createElement('img');
     img.classList.add('popup__photo');
     img.src = photo;
     img.alt = 'Фотография жилья';
+    img.style.width = '45px';
+    img.style.height = '40px';
     photosGallery.appendChild(img);
   }
 };
@@ -52,31 +64,34 @@ const hideEmptyData = (element) => {
   }
 };
 
-const rentalAdTemplate = document.querySelector('#card').content;
+const createRentalAdsFromTemplate =(adsNumber) => {
+  const rentalAdTemplate = document.querySelector('#card').content;
 
-const rentalAds = createRentalAds(1);
+  const rentalAds = createRentalAds(adsNumber);
 
-const testInCanvas = document.querySelector('#map-canvas');
-const rentalListFragment = document.createDocumentFragment();
+  const testInCanvas = document.querySelector('#map-canvas');
+  const rentalListFragment = document.createDocumentFragment();
 
-rentalAds.forEach(({author, offer, }) => {
-  const rentalAdElement = rentalAdTemplate.cloneNode(true);
+  rentalAds.forEach(({author, offer, }) => {
+    const rentalAdElement = rentalAdTemplate.cloneNode(true);
 
-  rentalAdElement.querySelector('.popup__title').textContent = offer.title;
-  rentalAdElement.querySelector('.popup__text--address').textContent = offer.address;
-  rentalAdElement.querySelector('.popup__text--price').textContent = `${offer.price} ₽/ночь`;
-  rentalAdElement.querySelector('.popup__type').textContent = ASSOCIATED_TYPES[offer.type];
-  rentalAdElement.querySelector('.popup__text--capacity').textContent = createCapacitySentence(offer.rooms, offer.guests);
-  rentalAdElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
-  showRentalAdFeatures(rentalAdElement, offer.features);
-  rentalAdElement.querySelector('.popup__description').textContent = offer.description;
-  createPhotosGallery(rentalAdElement, offer.photos);
-  rentalAdElement.querySelector('.popup__avatar').src = author.avatar;
+    rentalAdElement.querySelector('.popup__title').textContent = offer.title;
+    rentalAdElement.querySelector('.popup__text--address').textContent = offer.address;
+    rentalAdElement.querySelector('.popup__text--price').textContent = `${offer.price} ₽/ночь`;
+    rentalAdElement.querySelector('.popup__type').textContent = ASSOCIATED_TYPES[offer.type];
+    rentalAdElement.querySelector('.popup__text--capacity').textContent = createCapacitySentence(offer.rooms, offer.guests);
+    rentalAdElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
+    showRentalAdFeatures(rentalAdElement, offer.features);
+    rentalAdElement.querySelector('.popup__description').textContent = offer.description;
+    createPhotosGallery(rentalAdElement, offer.photos);
+    rentalAdElement.querySelector('.popup__avatar').src = author.avatar;
 
-  hideEmptyData(rentalAdElement);
+    hideEmptyData(rentalAdElement);
 
-  rentalListFragment.appendChild(rentalAdElement);
-});
+    rentalListFragment.appendChild(rentalAdElement);
+  });
 
-testInCanvas.appendChild(rentalListFragment);
+  testInCanvas.appendChild(rentalListFragment);
+};
 
+export{createRentalAdsFromTemplate};
