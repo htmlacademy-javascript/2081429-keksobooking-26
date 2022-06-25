@@ -1,6 +1,5 @@
-import {createRentalAds} from './create-objects.js';
-import './object-template.js';
+import {createRentalAdsFromTemplate} from './object-template.js';
 
-const NUMBER_OF_RENTAL_AD = 10;
+const NUMBER_OF_RENTAL_AD = 1;
 
-createRentalAds(NUMBER_OF_RENTAL_AD);
+createRentalAdsFromTemplate(NUMBER_OF_RENTAL_AD);
