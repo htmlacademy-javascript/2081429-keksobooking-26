@@ -7,7 +7,7 @@ const getRandomPositiveInteger = (a, b) => {
 };
 
 //получить случайное положительное число с плавающей точкой
-const getRandomPositiveFloat = (a, b, digits = 1) => {
+const getRandomPositiveFloat = (a, b, digits = 4) => {
   const lower = Math.min(Math.abs(a), Math.abs(b));
   const upper = Math.max(Math.abs(a), Math.abs(b));
   const result = Math.random() * (upper - lower) + lower;
