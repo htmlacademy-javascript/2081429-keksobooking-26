@@ -18,6 +18,14 @@ const selectedTypeElement = adForm.querySelector('#type');
 const priceElement = adForm.querySelector('#price');
 const guestsSelectedElement = document.querySelector('#capacity');
 const roomsSelectedElement = document.querySelector('#room_number');
+const timeInElement = document.querySelector('#timein');
+const timeOutElement = document.querySelector('#timeout');
+
+//синхронизация полей времени заезда и выезда
+[timeInElement, timeOutElement].forEach((item) => item.addEventListener('change', (evt) => {
+  timeInElement.value = evt.target.value;
+  timeOutElement.value = evt.target.value;
+}));
 
 //функция валидации поля цены за проживание
 const validatePrice = (priceValue) => (priceValue >= PRICE_TYPES[selectedTypeElement.value]);
