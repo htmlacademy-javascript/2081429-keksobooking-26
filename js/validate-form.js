@@ -20,6 +20,35 @@ const guestsSelectedElement = document.querySelector('#capacity');
 const roomsSelectedElement = document.querySelector('#room_number');
 const timeInElement = document.querySelector('#timein');
 const timeOutElement = document.querySelector('#timeout');
+const sliderPriceElement = adForm.querySelector('.ad-form__slider');
+
+//создание слайдера и синхронизация с полем цены
+noUiSlider.create(sliderPriceElement, {
+  range: {
+    min: 0,
+    max: Number(priceElement.max),
+  },
+  start: Number(priceElement.placeholder),
+  step: 100,
+  format: {
+    to:
+      function (value) {
+        return value.toFixed(0);
+      },
+    from: function (value) {
+      return Number(value);
+    },
+  },
+});
+
+sliderPriceElement.noUiSlider.on('slide', () => {
+  priceElement.value = sliderPriceElement.noUiSlider.get();
+  pristine.validate(priceElement);
+});
+
+priceElement.addEventListener('change', (evt) => {
+  sliderPriceElement.noUiSlider.set(Number(evt.target.value));
+});
 
 //синхронизация полей времени заезда и выезда
 [timeInElement, timeOutElement].forEach((item) => item.addEventListener('change', (evt) => {
@@ -70,4 +99,4 @@ const validateFields = () => {
   });
 };
 
-export{validateFields};
+export{onOptionChange,validateFields};

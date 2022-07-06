@@ -1014,6 +1014,10 @@ fieldset {
   opacity: 0.6;
 }
 
+.error__validation {
+  color: rgb(163, 3, 3);
+}
+
 .visually-hidden {
   position: absolute;
 
