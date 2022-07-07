@@ -2,6 +2,10 @@ import {switchToActiveState} from './search-form.js';
 import {createRentalAds} from './create-objects.js';
 import {createRentalAdFromTemplate} from './object-template.js';
 
+const CENTER_POINT_LAT = 35.68944;
+const CENTER_POINT_LNG = 139.69167;
+const MAP_ZOOM = 10;
+
 const map = L.map('map-canvas');
 
 //инициализируем карту
@@ -11,9 +15,9 @@ const createMap = () => {
       switchToActiveState();
     })
     .setView({
-      lat: 35.68944,
-      lng: 139.69167,
-    }, 10);
+      lat: CENTER_POINT_LAT,
+      lng: CENTER_POINT_LNG,
+    }, MAP_ZOOM);
 
   L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -33,8 +37,8 @@ const createMainPin = () => {
 
   const mainPinMarker = L.marker(
     {
-      lat: 35.68944,
-      lng: 139.69167,
+      lat: CENTER_POINT_LAT,
+      lng: CENTER_POINT_LNG,
     },
     {
       draggable: true,
@@ -74,13 +78,11 @@ const createPinsOnMap = (numberAds) => {
   const markerGroup = L.layerGroup().addTo(map);
 
   const createPinMarker = (rentalAd) => {
-    const {author, offer, location} = rentalAd;
-
 
     const pinMarker = L.marker(
       {
-        lat: location.lat,
-        lng: location.lng,
+        lat: rentalAd.location.lat,
+        lng: rentalAd.location.lng,
       },
       {
         pinIcon
@@ -89,7 +91,7 @@ const createPinsOnMap = (numberAds) => {
 
     pinMarker
       .addTo(markerGroup)
-      .bindPopup(createRentalAdFromTemplate(author, offer));
+      .bindPopup(createRentalAdFromTemplate(rentalAd));
 
     return pinMarker;
   };

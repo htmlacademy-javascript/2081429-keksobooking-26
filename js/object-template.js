@@ -62,21 +62,21 @@ const hideEmptyData = (element) => {
   }
 };
 
-const createRentalAdFromTemplate =(rentalAdAuthor, rentalAdOffer) => {
+const createRentalAdFromTemplate =(rentalAd) => {
   const rentalAdTemplate = document.querySelector('#card').content;
   const rentalListFragment = document.createDocumentFragment();
   const rentalAdElement = rentalAdTemplate.cloneNode(true);
 
-  rentalAdElement.querySelector('.popup__title').textContent = rentalAdOffer.title;
-  rentalAdElement.querySelector('.popup__text--address').textContent = rentalAdOffer.address;
-  rentalAdElement.querySelector('.popup__text--price').textContent = `${rentalAdOffer.price} ₽/ночь`;
-  rentalAdElement.querySelector('.popup__type').textContent = ASSOCIATED_TYPES[rentalAdOffer.type];
-  rentalAdElement.querySelector('.popup__text--capacity').textContent = createCapacitySentence(rentalAdOffer.rooms, rentalAdOffer.guests);
-  rentalAdElement.querySelector('.popup__text--time').textContent = `Заезд после ${rentalAdOffer.checkin}, выезд до ${rentalAdOffer.checkout}`;
-  showRentalAdFeatures(rentalAdElement, rentalAdOffer.features);
-  rentalAdElement.querySelector('.popup__description').textContent = rentalAdOffer.description;
-  createPhotosGallery(rentalAdElement, rentalAdOffer.photos);
-  rentalAdElement.querySelector('.popup__avatar').src = rentalAdAuthor.avatar;
+  rentalAdElement.querySelector('.popup__title').textContent = rentalAd.offer.title;
+  rentalAdElement.querySelector('.popup__text--address').textContent = rentalAd.offer.address;
+  rentalAdElement.querySelector('.popup__text--price').textContent = `${rentalAd.offer.price} ₽/ночь`;
+  rentalAdElement.querySelector('.popup__type').textContent = ASSOCIATED_TYPES[rentalAd.offer.type];
+  rentalAdElement.querySelector('.popup__text--capacity').textContent = createCapacitySentence(rentalAd.offer.rooms, rentalAd.offer.guests);
+  rentalAdElement.querySelector('.popup__text--time').textContent = `Заезд после ${rentalAd.offer.checkin}, выезд до ${rentalAd.offer.checkout}`;
+  showRentalAdFeatures(rentalAdElement, rentalAd.offer.features);
+  rentalAdElement.querySelector('.popup__description').textContent = rentalAd.offer.description;
+  createPhotosGallery(rentalAdElement, rentalAd.offer.photos);
+  rentalAdElement.querySelector('.popup__avatar').src = rentalAd.author.avatar;
 
   hideEmptyData(rentalAdElement);
 
