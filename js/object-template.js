@@ -1,5 +1,3 @@
-import {createRentalAds} from './create-objects.js';
-
 const ASSOCIATED_TYPES = {
   'flat': 'Квартира',
   'bungalow': 'Бунгало',
@@ -64,34 +62,26 @@ const hideEmptyData = (element) => {
   }
 };
 
-const createRentalAdsFromTemplate =(adsNumber) => {
+const createRentalAdFromTemplate =(rentalAd) => {
   const rentalAdTemplate = document.querySelector('#card').content;
-
-  const rentalAds = createRentalAds(adsNumber);
-
-  const testInCanvas = document.querySelector('#map-canvas');
   const rentalListFragment = document.createDocumentFragment();
+  const rentalAdElement = rentalAdTemplate.cloneNode(true);
 
-  rentalAds.forEach(({author, offer, }) => {
-    const rentalAdElement = rentalAdTemplate.cloneNode(true);
+  rentalAdElement.querySelector('.popup__title').textContent = rentalAd.offer.title;
+  rentalAdElement.querySelector('.popup__text--address').textContent = rentalAd.offer.address;
+  rentalAdElement.querySelector('.popup__text--price').textContent = `${rentalAd.offer.price} ₽/ночь`;
+  rentalAdElement.querySelector('.popup__type').textContent = ASSOCIATED_TYPES[rentalAd.offer.type];
+  rentalAdElement.querySelector('.popup__text--capacity').textContent = createCapacitySentence(rentalAd.offer.rooms, rentalAd.offer.guests);
+  rentalAdElement.querySelector('.popup__text--time').textContent = `Заезд после ${rentalAd.offer.checkin}, выезд до ${rentalAd.offer.checkout}`;
+  showRentalAdFeatures(rentalAdElement, rentalAd.offer.features);
+  rentalAdElement.querySelector('.popup__description').textContent = rentalAd.offer.description;
+  createPhotosGallery(rentalAdElement, rentalAd.offer.photos);
+  rentalAdElement.querySelector('.popup__avatar').src = rentalAd.author.avatar;
 
-    rentalAdElement.querySelector('.popup__title').textContent = offer.title;
-    rentalAdElement.querySelector('.popup__text--address').textContent = offer.address;
-    rentalAdElement.querySelector('.popup__text--price').textContent = `${offer.price} ₽/ночь`;
-    rentalAdElement.querySelector('.popup__type').textContent = ASSOCIATED_TYPES[offer.type];
-    rentalAdElement.querySelector('.popup__text--capacity').textContent = createCapacitySentence(offer.rooms, offer.guests);
-    rentalAdElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
-    showRentalAdFeatures(rentalAdElement, offer.features);
-    rentalAdElement.querySelector('.popup__description').textContent = offer.description;
-    createPhotosGallery(rentalAdElement, offer.photos);
-    rentalAdElement.querySelector('.popup__avatar').src = author.avatar;
+  hideEmptyData(rentalAdElement);
 
-    hideEmptyData(rentalAdElement);
-
-    rentalListFragment.appendChild(rentalAdElement);
-  });
-
-  testInCanvas.appendChild(rentalListFragment);
+  rentalListFragment.appendChild(rentalAdElement);
+  return rentalListFragment;
 };
 
-export{createRentalAdsFromTemplate};
+export {createRentalAdFromTemplate};

@@ -1,14 +1,12 @@
-import {createRentalAdsFromTemplate} from './object-template.js';
-import {switchToInactiveState, switchToActiveState} from './search-form.js';
+import {switchToInactiveState} from './search-form.js';
 import {validateFields} from './validate-form.js';
+import {makeInteractiveMap} from './interactive-map.js';
 
-const NUMBER_OF_RENTAL_AD = 1;
-
-createRentalAdsFromTemplate(NUMBER_OF_RENTAL_AD);
+const NUMBER_OF_RENTAL_AD = 10;
 
 switchToInactiveState();
 
-switchToActiveState();
+makeInteractiveMap(NUMBER_OF_RENTAL_AD);
 
 validateFields();
 
