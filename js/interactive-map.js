@@ -1,10 +1,10 @@
 import {switchToActiveState} from './search-form.js';
-import {createRentalAds} from './create-objects.js';
 import {createRentalAdFromTemplate} from './object-template.js';
 
 const CENTER_POINT_LAT = 35.68944;
 const CENTER_POINT_LNG = 139.69167;
 const MAP_ZOOM = 10;
+const NUMBER_OF_RENTAL_AD = 10;
 
 const map = L.map('map-canvas');
 
@@ -65,10 +65,7 @@ const putMainPinCoordinatesIntoAddress = (marker) => {
 };
 
 
-const createPinsOnMap = (numberAds) => {
-
-  const rentalAds = createRentalAds(numberAds);
-
+const createPinsOnMap = (rentalAds, createFromTemplate) => {
   const pinIcon = L.icon({
     iconUrl: './img/pin.svg',
     iconSize: [40, 40],
@@ -91,7 +88,7 @@ const createPinsOnMap = (numberAds) => {
 
     pinMarker
       .addTo(markerGroup)
-      .bindPopup(createRentalAdFromTemplate(rentalAd));
+      .bindPopup(createFromTemplate(rentalAd));
 
     return pinMarker;
   };
@@ -102,13 +99,13 @@ const createPinsOnMap = (numberAds) => {
 };
 
 //получаем интерактивную карту
-const makeInteractiveMap = (numberAds) => {
+const makeInteractiveMap = (rentalAds) => {
   createMap();
 
   const marker = createMainPin();
   putMainPinCoordinatesIntoAddress(marker);
 
-  createPinsOnMap(numberAds);
+  createPinsOnMap(rentalAds.slice(0, NUMBER_OF_RENTAL_AD), createRentalAdFromTemplate);
 };
 
 export{makeInteractiveMap};
