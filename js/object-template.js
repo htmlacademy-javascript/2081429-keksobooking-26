@@ -26,30 +26,33 @@ const createCapacitySentence = (roomNumber, guestNumber) => {
 //функция для отображения удобств
 const showRentalAdFeatures = (element, features) => {
   const featuresList = element.querySelectorAll('.popup__feature');
-  featuresList.forEach((featureItem) => {
-    const checkFeature = features.some(
-      (feature) => featureItem.classList.contains(`popup__feature--${  feature}`)
-    );
+  if (features) {
+    featuresList.forEach((featureItem) => {
+      const checkFeature = features.some(
+        (feature) => featureItem.classList.contains(`popup__feature--${  feature}`)
+      );
 
-    if (!checkFeature) {
-      featureItem.remove();
-    }
-  });
+      if (!checkFeature) {
+        featureItem.remove();
+      }
+    });
+  }
 };
 
 //функция для добавления фото в галерею
 const createPhotosGallery = (element, photos) => {
   const photosGallery = element.querySelector('.popup__photos');
   element.querySelector('.popup__photo').remove();
-
-  for (const photo of photos) {
-    const img = document.createElement('img');
-    img.classList.add('popup__photo');
-    img.src = photo;
-    img.alt = 'Фотография жилья';
-    img.style.width = '45px';
-    img.style.height = '40px';
-    photosGallery.appendChild(img);
+  if(photos) {
+    for (const photo of photos) {
+      const img = document.createElement('img');
+      img.classList.add('popup__photo');
+      img.src = photo;
+      img.alt = 'Фотография жилья';
+      img.style.width = '45px';
+      img.style.height = '40px';
+      photosGallery.appendChild(img);
+    }
   }
 };
 

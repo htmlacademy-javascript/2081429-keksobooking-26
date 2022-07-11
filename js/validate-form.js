@@ -1,3 +1,5 @@
+import {sendNewRentalAdToServer, showErrorMessage} from './server-exchange.js';
+
 const PRICE_TYPES = {
   'bungalow': 0,
   'flat': 1000,
@@ -81,9 +83,8 @@ const getGuestFieldErrorMessage = () => {
   return `Не более ${roomsSelectedElement.value} гостей`;
 };
 
-
-const validateFields = () => {
-
+//валидация текущего заполнения полей формы
+const validateCurrentFieldValues = () => {
   pristine.addValidator(priceElement, validatePrice, getPriceErrorMessage);
   pristine.addValidator(guestsSelectedElement, validateGuestDependsOnRooms, getGuestFieldErrorMessage);
 
@@ -92,11 +93,42 @@ const validateFields = () => {
   roomsSelectedElement.addEventListener('change', () => {
     pristine.validate(guestsSelectedElement);
   });
+};
 
+const submitButton = document.querySelector('.ad-form__submit');
+
+//блокировка и разблокировка кнопки отправки
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Публикую...';
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+};
+
+//валидация формы при отправке
+const setAdFormForSubmit = (onSuccess) => {
   adForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
-    pristine.validate();
+
+    if (pristine.validate()) {
+      blockSubmitButton();
+      sendNewRentalAdToServer(
+        () => {
+          onSuccess();
+          unblockSubmitButton();
+          evt.target.reset();
+        },
+        () => {
+          showErrorMessage('Не удалось разместить объявление');
+          unblockSubmitButton();
+        },
+        new FormData(evt.target),
+      );
+    }
   });
 };
 
-export{onOptionChange,validateFields};
+export{validateCurrentFieldValues, onOptionChange, setAdFormForSubmit};
