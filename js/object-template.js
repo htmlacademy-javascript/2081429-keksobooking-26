@@ -80,7 +80,6 @@ const createRentalAdFromTemplate =(rentalAd) => {
   rentalAdElement.querySelector('.popup__description').textContent = rentalAd.offer.description;
   createPhotosGallery(rentalAdElement, rentalAd.offer.photos);
   rentalAdElement.querySelector('.popup__avatar').src = rentalAd.author.avatar;
-
   hideEmptyData(rentalAdElement);
 
   rentalListFragment.appendChild(rentalAdElement);

@@ -1,5 +1,6 @@
 import {switchToActiveState} from './search-form.js';
 import {createRentalAdFromTemplate} from './object-template.js';
+import {getFilteredDataFromServer} from './filters.js';
 
 const CENTER_POINT_LAT = 35.68944;
 const CENTER_POINT_LNG = 139.69167;
@@ -88,24 +89,29 @@ const createPinsOnMap = (rentalAds, createFromTemplate) => {
 
     pinMarker
       .addTo(markerGroup)
-      .bindPopup(createFromTemplate(rentalAd));
+      .bindPopup(() => createFromTemplate(rentalAd));
 
     return pinMarker;
   };
 
-  rentalAds.forEach((rentalAd) => {
-    createPinMarker(rentalAd);
-  });
+  const filteredRentalAds = getFilteredDataFromServer(rentalAds);
+  filteredRentalAds
+    .slice(0, NUMBER_OF_RENTAL_AD)
+    .forEach((rentalAd) => {
+      createPinMarker(rentalAd);
+    });
 };
 
 //получаем интерактивную карту
 const makeInteractiveMap = (rentalAds) => {
+  map.eachLayer((layer) => {
+    map.removeLayer(layer);
+  });
   createMap();
 
   const marker = createMainPin();
   putMainPinCoordinatesIntoAddress(marker);
-
-  createPinsOnMap(rentalAds.slice(0, NUMBER_OF_RENTAL_AD), createRentalAdFromTemplate);
+  createPinsOnMap(rentalAds, createRentalAdFromTemplate);
 };
 
 export{makeInteractiveMap};

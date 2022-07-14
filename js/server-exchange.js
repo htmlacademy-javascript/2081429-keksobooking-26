@@ -1,3 +1,5 @@
+import {isEscapeKey} from './util.js';
+
 const SUCCESS_SHOW_TIME = 5000;
 const ERROR_SHOW_TIME = 5000;
 
@@ -18,6 +20,28 @@ const showErrorMessage = (errorMessage) => {
   tryAgainButton.removeEventListener('click', () => {
     errorMessageElement.remove();
   });
+
+  document.addEventListener('keydown', (evt) => {
+    if (isEscapeKey(evt)) {
+      evt.preventDefault();
+      errorMessageElement.remove();
+    }
+  });
+
+  document.removeEventListener('keydown', (evt) => {
+    if (isEscapeKey(evt)) {
+      evt.preventDefault();
+      errorMessageElement.remove();
+    }
+  });
+
+  document.addEventListener('click', () => {
+    errorMessageElement.remove();
+  });
+
+  document.removeEventListener('click', () => {
+    errorMessageElement.remove();
+  });
 };
 
 //окно, всплывающее при успешной отправке
@@ -25,6 +49,27 @@ const showSuccessMessage = () => {
   const successMessageTemplate = document.querySelector('#success').content.firstElementChild;
   const successMessageElement = successMessageTemplate.cloneNode(true);
   document.body.append(successMessageElement);
+
+  document.addEventListener('keydown', (evt) => {
+    if (isEscapeKey(evt)) {
+      evt.preventDefault();
+      successMessageElement.remove();
+    }
+  });
+
+  document.removeEventListener('keydown', (evt) => {
+    if (isEscapeKey(evt)) {
+      evt.preventDefault();
+      successMessageElement.remove();
+    }
+  });
+
+  document.addEventListener('click', () => {
+    successMessageElement.remove();
+  });
+  document.removeEventListener('click', () => {
+    successMessageElement.remove();
+  });
 
   setTimeout(() => {
     successMessageElement.remove();
@@ -44,7 +89,6 @@ const showLoadErrorMessage = (message) => {
   loadErrorMessage.style.fontSize = '24px';
   loadErrorMessage.style.textAlign = 'center';
   loadErrorMessage.style.backgroundColor = 'rgb(163, 3, 3)';
-
 
   document.body.append(loadErrorMessage);
 
@@ -66,7 +110,7 @@ const sendNewRentalAdToServer = (onSuccess, onFail, data) => {
   fetch('https://26.javascript.pages.academy/keksobooking',
     {
       method: 'POST',
-      data,
+      body: data,
     },
   )
     .then((response) => {
