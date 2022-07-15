@@ -9,6 +9,21 @@ const NUMBER_OF_RENTAL_AD = 10;
 
 const map = L.map('map-canvas');
 
+const mainPinIcon = L.icon({
+  iconUrl: './img/main-pin.svg',
+  iconSize: [52, 52],
+  iconAnchor: [26, 52],
+});
+
+const pinIcon = L.icon({
+  iconUrl: './img/pin.svg',
+  iconSize: [40, 40],
+  iconAnchor: [20, 40],
+});
+
+const markerGroup = L.layerGroup().addTo(map);
+const mainPinLayer = L.layerGroup().addTo(map);
+
 //инициализируем карту
 const createMap = () => {
   map
@@ -30,11 +45,6 @@ const createMap = () => {
 
 //создаем главную метку
 const createMainPin = () => {
-  const mainPinIcon = L.icon({
-    iconUrl: './img/main-pin.svg',
-    iconSize: [52, 52],
-    iconAnchor: [26, 52],
-  });
 
   const mainPinMarker = L.marker(
     {
@@ -47,10 +57,9 @@ const createMainPin = () => {
     },
   );
 
-  mainPinMarker.addTo(map);
+  mainPinMarker.addTo(mainPinLayer);
   return mainPinMarker;
 };
-
 
 //получаем координаты метки
 const putMainPinCoordinatesIntoAddress = (marker) => {
@@ -67,13 +76,6 @@ const putMainPinCoordinatesIntoAddress = (marker) => {
 
 
 const createPinsOnMap = (rentalAds, createFromTemplate) => {
-  const pinIcon = L.icon({
-    iconUrl: './img/pin.svg',
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
-  });
-
-  const markerGroup = L.layerGroup().addTo(map);
 
   const createPinMarker = (rentalAd) => {
 
@@ -95,6 +97,7 @@ const createPinsOnMap = (rentalAds, createFromTemplate) => {
   };
 
   const filteredRentalAds = getFilteredDataFromServer(rentalAds);
+
   filteredRentalAds
     .slice(0, NUMBER_OF_RENTAL_AD)
     .forEach((rentalAd) => {
@@ -104,14 +107,25 @@ const createPinsOnMap = (rentalAds, createFromTemplate) => {
 
 //получаем интерактивную карту
 const makeInteractiveMap = (rentalAds) => {
-  map.eachLayer((layer) => {
-    map.removeLayer(layer);
-  });
+
   createMap();
 
   const marker = createMainPin();
+
   putMainPinCoordinatesIntoAddress(marker);
+
   createPinsOnMap(rentalAds, createRentalAdFromTemplate);
 };
 
-export{makeInteractiveMap};
+const updateInteractiveMap = (rentalAds) => {
+  markerGroup.clearLayers();
+  createPinsOnMap(rentalAds, createRentalAdFromTemplate);
+};
+
+const clearAllLayersOnMap = () => {
+  map.off();
+  mainPinLayer.clearLayers();
+  markerGroup.clearLayers();
+};
+
+export{makeInteractiveMap, updateInteractiveMap, clearAllLayersOnMap};

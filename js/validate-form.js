@@ -1,4 +1,5 @@
 import {sendNewRentalAdToServer, showErrorMessage} from './server-exchange.js';
+import {clearForm} from './util.js';
 
 const PRICE_TYPES = {
   'bungalow': 0,
@@ -109,7 +110,7 @@ const unblockSubmitButton = () => {
 };
 
 //валидация формы при отправке
-const setAdFormForSubmit = (onSuccess) => {
+const setAdFormForSubmit = (onSuccess, getData) => {
   adForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
 
@@ -119,7 +120,8 @@ const setAdFormForSubmit = (onSuccess) => {
         () => {
           onSuccess();
           unblockSubmitButton();
-          evt.target.reset();
+          clearForm();
+          getData();
         },
         () => {
           showErrorMessage('Не удалось разместить объявление');
