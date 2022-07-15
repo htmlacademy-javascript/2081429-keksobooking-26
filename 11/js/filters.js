@@ -1,3 +1,6 @@
+const OFFER_LOW_PRICE = 10000;
+const OFFER_HIGH_PRICE = 50000;
+
 const mapFiltersForm = document.querySelector('.map__filters');
 
 const typeFilterElement = mapFiltersForm.querySelector('[name="housing-type"]');
@@ -33,11 +36,11 @@ const compareFeatures = (featureA, featureB) => {
 //сравнение с ценовым диапазоном
 const filterRentalAdByPrice = (rentalAds) => {
   if (priceFilterElement.value === 'low') {
-    return rentalAds.filter((rentalAd) => rentalAd.offer.price < 10000);
+    return rentalAds.filter((rentalAd) => rentalAd.offer.price < OFFER_LOW_PRICE);
   } else if (priceFilterElement.value === 'middle') {
-    return rentalAds.filter((rentalAd) => rentalAd.offer.price >= 10000 && rentalAd.offer.price <= 50000);
+    return rentalAds.filter((rentalAd) => rentalAd.offer.price >= OFFER_LOW_PRICE && rentalAd.offer.price <= OFFER_HIGH_PRICE);
   } else if ((priceFilterElement.value === 'high')) {
-    return rentalAds.filter((rentalAd) => rentalAd.offer.price >= 50000);
+    return rentalAds.filter((rentalAd) => rentalAd.offer.price >= OFFER_HIGH_PRICE);
   } else {
     return rentalAds;
   }
@@ -48,8 +51,8 @@ const getFilteredDataFromServer = (rentalAds) => {
 
   const filteredArrayByType = (typeFilterElement.value === 'any') ? rentalAdsCopy : rentalAdsCopy.filter((rentalAd) => rentalAd.offer.type === typeFilterElement.value);
   const filteredArrayByPrice = filterRentalAdByPrice(filteredArrayByType);
-  const filteredArrayByRooms = (roomsFilterElement.value === 'any') ? filteredArrayByPrice : filteredArrayByPrice.filter((rentalAd) => rentalAd.offer.rooms === Number(roomsFilterElement.value));
-  const filteredArrayByGuests = (guestsFilterElement.value === 'any') ? filteredArrayByRooms : filteredArrayByRooms.filter((rentalAd) => rentalAd.offer.guests === Number(guestsFilterElement.value));
+  const filteredArrayByRooms = (roomsFilterElement.value === 'any') ? filteredArrayByPrice : filteredArrayByPrice.filter((rentalAd) => rentalAd.offer.rooms === parseInt(roomsFilterElement.value, 10));
+  const filteredArrayByGuests = (guestsFilterElement.value === 'any') ? filteredArrayByRooms : filteredArrayByRooms.filter((rentalAd) => rentalAd.offer.guests === parseInt(guestsFilterElement.value, 10));
   const filteredArrayByFeatures = filteredArrayByGuests.sort(compareFeatures);
 
   return filteredArrayByFeatures;
