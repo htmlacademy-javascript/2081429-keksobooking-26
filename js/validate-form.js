@@ -1,4 +1,5 @@
-import {sendNewRentalAdToServer, showErrorMessage} from './server-exchange.js';
+import {sendNewRentalAdToServer} from './server-exchange.js';
+import {showErrorMessage} from './popups.js';
 import {clearForm} from './util.js';
 
 const PRICE_TYPES = {
