@@ -5,6 +5,7 @@ import {makeInteractiveMap, updateInteractiveMap} from './interactive-map.js';
 import {showSuccessMessage} from './popups.js';
 import {clickOnFilter} from './filters.js';
 import {debounce} from './util.js';
+import './photos-upload.js';
 
 switchToInactiveState();
 
@@ -22,9 +23,3 @@ setAdFormForSubmit(showSuccessMessage, () => {
   });
 });
 
-document.addEventListener('keydown', (evt) => {
-  if (evt.key === 'Tab') {
-    document.querySelector('.map__filters').reset();
-    document.querySelector('.ad-form').reset();
-  }
-});
