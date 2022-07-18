@@ -5,7 +5,6 @@ import {makeInteractiveMap, updateInteractiveMap} from './interactive-map.js';
 import {showSuccessMessage} from './popups.js';
 import {clickOnFilter} from './filters.js';
 import {debounce} from './util.js';
-import './photos-upload.js';
 
 switchToInactiveState();
 

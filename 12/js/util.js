@@ -13,6 +13,19 @@ const debounce = (callback) => {
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
+const submitButton = document.querySelector('.ad-form__submit');
+
+//блокировка и разблокировка кнопки отправки
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Публикую...';
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+};
+
 //очистить форму
 const clearForm = () => {
   document.querySelector('.map__filters').reset();
@@ -20,5 +33,5 @@ const clearForm = () => {
   clearAllLayersOnMap();
 };
 
-export{debounce, isEscapeKey, clearForm};
+export{debounce, isEscapeKey, clearForm, blockSubmitButton, unblockSubmitButton};
 
