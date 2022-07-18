@@ -22,9 +22,3 @@ setAdFormForSubmit(showSuccessMessage, () => {
   });
 });
 
-document.addEventListener('keydown', (evt) => {
-  if (evt.key === 'Tab') {
-    document.querySelector('.map__filters').reset();
-    document.querySelector('.ad-form').reset();
-  }
-});
