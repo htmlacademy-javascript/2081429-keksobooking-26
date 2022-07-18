@@ -1,6 +1,7 @@
 import {sendNewRentalAdToServer} from './server-exchange.js';
 import {showErrorMessage} from './popups.js';
-import {clearForm} from './util.js';
+import {clearForm, blockSubmitButton, unblockSubmitButton} from './util.js';
+import {loadPhotosIntoFrom} from './photos-upload.js';
 
 const PRICE_TYPES = {
   'bungalow': 0,
@@ -97,18 +98,8 @@ const validateCurrentFieldValues = () => {
   });
 };
 
-const submitButton = document.querySelector('.ad-form__submit');
-
-//блокировка и разблокировка кнопки отправки
-const blockSubmitButton = () => {
-  submitButton.disabled = true;
-  submitButton.textContent = 'Публикую...';
-};
-
-const unblockSubmitButton = () => {
-  submitButton.disabled = false;
-  submitButton.textContent = 'Опубликовать';
-};
+//загрузка фотографий в форму
+loadPhotosIntoFrom();
 
 //валидация формы при отправке
 const setAdFormForSubmit = (onSuccess, getData) => {
@@ -132,6 +123,7 @@ const setAdFormForSubmit = (onSuccess, getData) => {
       );
     }
   });
+
 };
 
 export{validateCurrentFieldValues, onOptionChange, setAdFormForSubmit};
