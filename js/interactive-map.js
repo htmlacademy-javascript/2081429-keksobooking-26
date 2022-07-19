@@ -1,11 +1,10 @@
-import {switchToActiveState} from './search-form.js';
 import {createRentalAdFromTemplate} from './object-template.js';
 import {getFilteredDataFromServer} from './filters.js';
+import {switchToActiveState} from './util.js';
 
 const CENTER_POINT_LAT = 35.68944;
 const CENTER_POINT_LNG = 139.69167;
 const MAP_ZOOM = 10;
-const NUMBER_OF_RENTAL_AD = 10;
 
 const map = L.map('map-canvas');
 
@@ -98,11 +97,9 @@ const createPinsOnMap = (rentalAds, createFromTemplate) => {
 
   const filteredRentalAds = getFilteredDataFromServer(rentalAds);
 
-  filteredRentalAds
-    .slice(0, NUMBER_OF_RENTAL_AD)
-    .forEach((rentalAd) => {
-      createPinMarker(rentalAd);
-    });
+  filteredRentalAds.forEach((rentalAd) => {
+    createPinMarker(rentalAd);
+  });
 };
 
 //получаем интерактивную карту

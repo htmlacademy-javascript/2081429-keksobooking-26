@@ -2,6 +2,31 @@ import {clearAllLayersOnMap} from './interactive-map.js';
 
 const RERENDER_DELAY = 500;
 
+//функции перевода формы в активное и неактивное состояния
+const switchToInactiveState = () => {
+  const adForm = document.querySelector('.ad-form');
+  const mapFilter = document.querySelector('.map__filters');
+
+  adForm.classList.add('ad-form--disabled');
+  adForm.querySelectorAll('fieldset').forEach((element) => element.setAttribute('disabled', 'disabled'));
+
+  mapFilter.classList.add('map__filters--disabled');
+  mapFilter.querySelectorAll('select').forEach((element) => element.setAttribute('disabled', 'disabled'));
+  mapFilter.querySelectorAll('input').forEach((element) => element.setAttribute('disabled', 'disabled'));
+};
+
+const switchToActiveState = () => {
+  const adForm = document.querySelector('.ad-form');
+  const mapFilter = document.querySelector('.map__filters');
+
+  adForm.classList.remove('ad-form--disabled');
+  adForm.querySelectorAll('fieldset').forEach((element) => element.removeAttribute('disabled'));
+
+  mapFilter.classList.remove('map__filters--disabled');
+  mapFilter.querySelectorAll('select').forEach((element) => element.removeAttribute('disabled'));
+  mapFilter.querySelectorAll('input').forEach((element) => element.removeAttribute('disabled'));
+};
+
 //добавление задержки
 const debounce = (callback) => {
   let timeoutId;
@@ -33,5 +58,5 @@ const clearForm = () => {
   clearAllLayersOnMap();
 };
 
-export{debounce, isEscapeKey, clearForm, blockSubmitButton, unblockSubmitButton};
+export{switchToInactiveState, switchToActiveState, debounce, isEscapeKey, clearForm, blockSubmitButton, unblockSubmitButton};
 
