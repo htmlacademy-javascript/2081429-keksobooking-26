@@ -126,4 +126,11 @@ const setAdFormForSubmit = (onSuccess, getData) => {
 
 };
 
-export{validateCurrentFieldValues, onOptionChange, setAdFormForSubmit};
+const resetPage = (getData) => {
+  adForm.addEventListener('reset', () => {
+    clearForm();
+    getData();
+  });
+};
+
+export{validateCurrentFieldValues, onOptionChange, setAdFormForSubmit, resetPage};

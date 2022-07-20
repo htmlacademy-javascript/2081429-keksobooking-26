@@ -1,4 +1,4 @@
-import {validateCurrentFieldValues, setAdFormForSubmit} from './form-input.js';
+import {validateCurrentFieldValues, setAdFormForSubmit, resetPage} from './form-input.js';
 import {getRentalAdsDataFromServer} from './server-exchange.js';
 import {makeInteractiveMap, updateInteractiveMap} from './interactive-map.js';
 import {showSuccessMessage} from './popups.js';
@@ -21,3 +21,9 @@ setAdFormForSubmit(showSuccessMessage, () => {
   });
 });
 
+resetPage(() => {
+  getRentalAdsDataFromServer((rentalAds) => {
+    makeInteractiveMap(rentalAds);
+    clickOnFilter(debounce(() => updateInteractiveMap(rentalAds)));
+  });
+});
