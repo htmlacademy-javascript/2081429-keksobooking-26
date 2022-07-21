@@ -3,7 +3,7 @@ import {showErrorMessage} from './popups.js';
 import {clearForm, blockSubmitButton, unblockSubmitButton} from './util.js';
 import {loadPhotosIntoFrom} from './photos-upload.js';
 
-const PRICE_TYPES = {
+const PriceTypes = {
   'bungalow': 0,
   'flat': 1000,
   'hotel': 3000,
@@ -62,19 +62,19 @@ priceElement.addEventListener('change', (evt) => {
 }));
 
 //функция валидации поля цены за проживание
-const validatePrice = (priceValue) => (priceValue >= PRICE_TYPES[selectedTypeElement.value]);
+const validatePrice = (priceValue) => (priceValue >= PriceTypes[selectedTypeElement.value]);
 
 //функция вывода сообщения при неверно введённой цене
-const getPriceErrorMessage = () => (`Не менее ${PRICE_TYPES[selectedTypeElement.value]} рублей`);
+const getPriceErrorMessage = () => (`Не менее ${PriceTypes[selectedTypeElement.value]} рублей`);
 
 //обработчик события изменения типа проживания
 function onOptionChange() {
-  priceElement.setAttribute('placeholder', PRICE_TYPES[this.value]);
+  priceElement.setAttribute('placeholder', PriceTypes[this.value]);
   pristine.validate(priceElement);
 }
 
 //функция валидации поля количества гостей
-const validateGuestDependsOnRooms = () => (guestsSelectedElement.value <= roomsSelectedElement.value);
+const validateGuestDependsOnRooms = () => (parseInt(guestsSelectedElement.value, 10) <= parseInt(roomsSelectedElement.value, 10));
 
 //функция по выводу ошибки при несоответствии полей комнат и гостей
 const getGuestFieldErrorMessage = () => {
@@ -113,6 +113,7 @@ const setAdFormForSubmit = (onSuccess, getData) => {
           onSuccess();
           unblockSubmitButton();
           clearForm();
+          sliderPriceElement.noUiSlider.reset();
           getData();
         },
         () => {
@@ -128,6 +129,7 @@ const setAdFormForSubmit = (onSuccess, getData) => {
 
 const resetPage = (getData) => {
   adForm.addEventListener('reset', () => {
+    sliderPriceElement.noUiSlider.reset();
     clearForm();
     getData();
   });

@@ -1,4 +1,4 @@
-import {clearAllLayersOnMap} from './interactive-map.js';
+import {resetMap} from './interactive-map.js';
 
 const RERENDER_DELAY = 500;
 
@@ -55,7 +55,7 @@ const unblockSubmitButton = () => {
 const clearForm = () => {
   document.querySelector('.map__filters').reset();
   document.querySelector('.ad-form').reset();
-  clearAllLayersOnMap();
+  resetMap();
 };
 
 export{switchToInactiveState, switchToActiveState, debounce, isEscapeKey, clearForm, blockSubmitButton, unblockSubmitButton};
