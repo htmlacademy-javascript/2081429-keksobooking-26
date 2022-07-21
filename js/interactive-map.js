@@ -20,7 +20,7 @@ const pinIcon = L.icon({
   iconAnchor: [20, 40],
 });
 
-const markerGroup = L.layerGroup().addTo(map);
+const markerGroupLayer = L.layerGroup().addTo(map);
 const mainPinLayer = L.layerGroup().addTo(map);
 
 //инициализируем карту
@@ -73,7 +73,7 @@ const putMainPinCoordinatesIntoAddress = (marker) => {
   });
 };
 
-
+//добавляем маркеры из фильтрованных данных на карту
 const createPinsOnMap = (rentalAds, createFromTemplate) => {
 
   const createPinMarker = (rentalAd) => {
@@ -89,7 +89,7 @@ const createPinsOnMap = (rentalAds, createFromTemplate) => {
     );
 
     pinMarker
-      .addTo(markerGroup)
+      .addTo(markerGroupLayer)
       .bindPopup(() => createFromTemplate(rentalAd));
 
     return pinMarker;
@@ -103,26 +103,24 @@ const createPinsOnMap = (rentalAds, createFromTemplate) => {
 };
 
 //получаем интерактивную карту
-const makeInteractiveMap = (rentalAds) => {
+const mainMarker = createMainPin();
 
+const makeInteractiveMap = (rentalAds) => {
   createMap();
 
-  const marker = createMainPin();
-
-  putMainPinCoordinatesIntoAddress(marker);
+  putMainPinCoordinatesIntoAddress(mainMarker);
 
   createPinsOnMap(rentalAds, createRentalAdFromTemplate);
 };
 
 const updateInteractiveMap = (rentalAds) => {
-  markerGroup.clearLayers();
+  markerGroupLayer.clearLayers();
   createPinsOnMap(rentalAds, createRentalAdFromTemplate);
 };
 
-const clearAllLayersOnMap = () => {
-  map.off();
-  mainPinLayer.clearLayers();
-  markerGroup.clearLayers();
+const resetMap = () => {
+  mainMarker.setLatLng([CENTER_POINT_LAT, CENTER_POINT_LNG]);
+  markerGroupLayer.clearLayers();
 };
 
-export{makeInteractiveMap, updateInteractiveMap, clearAllLayersOnMap};
+export{makeInteractiveMap, updateInteractiveMap, resetMap};

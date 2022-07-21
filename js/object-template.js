@@ -1,4 +1,4 @@
-const ASSOCIATED_TYPES = {
+const AssociatedTypes = {
   'flat': 'Квартира',
   'bungalow': 'Бунгало',
   'house': 'Дом',
@@ -73,7 +73,7 @@ const createRentalAdFromTemplate =(rentalAd) => {
   rentalAdElement.querySelector('.popup__title').textContent = rentalAd.offer.title;
   rentalAdElement.querySelector('.popup__text--address').textContent = rentalAd.offer.address;
   rentalAdElement.querySelector('.popup__text--price').textContent = `${rentalAd.offer.price} ₽/ночь`;
-  rentalAdElement.querySelector('.popup__type').textContent = ASSOCIATED_TYPES[rentalAd.offer.type];
+  rentalAdElement.querySelector('.popup__type').textContent = AssociatedTypes[rentalAd.offer.type];
   rentalAdElement.querySelector('.popup__text--capacity').textContent = createCapacitySentence(rentalAd.offer.rooms, rentalAd.offer.guests);
   rentalAdElement.querySelector('.popup__text--time').textContent = `Заезд после ${rentalAd.offer.checkin}, выезд до ${rentalAd.offer.checkout}`;
   showRentalAdFeatures(rentalAdElement, rentalAd.offer.features);
