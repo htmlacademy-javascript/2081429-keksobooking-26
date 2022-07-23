@@ -1,8 +1,8 @@
-import {resetMap} from './interactive-map.js';
-
 const RERENDER_DELAY = 500;
+const CAPACITY_NUMBERS = [1, 2, 3];
 
 //функции перевода формы в активное и неактивное состояния
+
 const switchToInactiveState = () => {
   const adForm = document.querySelector('.ad-form');
   const mapFilter = document.querySelector('.map__filters');
@@ -42,21 +42,25 @@ const submitButton = document.querySelector('.ad-form__submit');
 
 //блокировка и разблокировка кнопки отправки
 const blockSubmitButton = () => {
-  submitButton.disabled = true;
-  submitButton.textContent = 'Публикую...';
+  if (submitButton.hasAttribute('disabled')) {
+    submitButton.disabled = false;
+    submitButton.textContent = 'Опубликовать';
+  } else {
+    submitButton.disabled = true;
+    submitButton.textContent = 'Публикую...';
+  }
 };
 
-const unblockSubmitButton = () => {
-  submitButton.disabled = false;
-  submitButton.textContent = 'Опубликовать';
+//окончание слова для шаблона в нужном формате
+const getDeclination = (number, declinationArray) => {
+  if (number === CAPACITY_NUMBERS[0]) {
+    return declinationArray[0];
+  } else if (number === CAPACITY_NUMBERS[1] || number === CAPACITY_NUMBERS[2]) {
+    return declinationArray[1];
+  }
+
+  return declinationArray[2];
 };
 
-//очистить форму
-const clearForm = () => {
-  document.querySelector('.map__filters').reset();
-  document.querySelector('.ad-form').reset();
-  resetMap();
-};
-
-export{switchToInactiveState, switchToActiveState, debounce, isEscapeKey, clearForm, blockSubmitButton, unblockSubmitButton};
+export{switchToActiveState, switchToInactiveState, debounce, isEscapeKey, blockSubmitButton, getDeclination};
 

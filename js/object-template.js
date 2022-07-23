@@ -1,27 +1,14 @@
-const AssociatedTypes = {
+import {getDeclination} from './util.js';
+
+const ASSOCIATED_TYPES = {
   'flat': 'Квартира',
   'bungalow': 'Бунгало',
   'house': 'Дом',
   'palace': 'Дворец',
   'hotel': 'Отель',
 };
-
-//создание строки по заселению в нужном формате
-const createCapacitySentence = (roomNumber, guestNumber) => {
-  let room = ' комнат ';
-
-  if ((roomNumber > 10) && (roomNumber < 20)) {
-    room = ' комнат ';
-  } else if (roomNumber % 10 === 1) {
-    room = ' комната ';
-  } else if ((roomNumber % 10 > 1) && (roomNumber % 10 < 5)) {
-    room = ' комнаты ';
-  }
-
-  const guest = ((guestNumber % 10 !== 1) || (guestNumber === 11)) ? ' гостей' : ' гостя';
-
-  return `${roomNumber + room  }для ${  guestNumber  }${guest}`;
-};
+const DECLINATION_ROOMS = ['комната', 'комнаты', 'комнат'];
+const DECLINATION_GUESTS = ['гостя', 'гостей', 'гостей'];
 
 //функция для отображения удобств
 const showRentalAdFeatures = (element, features) => {
@@ -73,8 +60,8 @@ const createRentalAdFromTemplate =(rentalAd) => {
   rentalAdElement.querySelector('.popup__title').textContent = rentalAd.offer.title;
   rentalAdElement.querySelector('.popup__text--address').textContent = rentalAd.offer.address;
   rentalAdElement.querySelector('.popup__text--price').textContent = `${rentalAd.offer.price} ₽/ночь`;
-  rentalAdElement.querySelector('.popup__type').textContent = AssociatedTypes[rentalAd.offer.type];
-  rentalAdElement.querySelector('.popup__text--capacity').textContent = createCapacitySentence(rentalAd.offer.rooms, rentalAd.offer.guests);
+  rentalAdElement.querySelector('.popup__type').textContent = ASSOCIATED_TYPES[rentalAd.offer.type];
+  rentalAdElement.querySelector('.popup__text--capacity').textContent = `${rentalAd.offer.rooms} ${getDeclination(rentalAd.offer.rooms, DECLINATION_ROOMS)} для ${rentalAd.offer.guests} ${getDeclination(rentalAd.offer.guests, DECLINATION_GUESTS)}`;
   rentalAdElement.querySelector('.popup__text--time').textContent = `Заезд после ${rentalAd.offer.checkin}, выезд до ${rentalAd.offer.checkout}`;
   showRentalAdFeatures(rentalAdElement, rentalAd.offer.features);
   rentalAdElement.querySelector('.popup__description').textContent = rentalAd.offer.description;
