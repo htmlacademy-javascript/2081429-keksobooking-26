@@ -1,15 +1,18 @@
 import {sendNewRentalAdToServer} from './server-exchange.js';
 import {showErrorMessage} from './popups.js';
-import {clearForm, blockSubmitButton, unblockSubmitButton} from './util.js';
-import {loadPhotosIntoFrom} from './photos-upload.js';
+import {blockSubmitButton} from './util.js';
+import {loadPhotosIntoFrom, resetUploadPhotos} from './photos-upload.js';
+import {resetMap} from './interactive-map.js';
 
-const PriceTypes = {
+const PRICE_TYPES = {
   'bungalow': 0,
   'flat': 1000,
   'hotel': 3000,
   'house': 5000,
   'palace': 10000,
 };
+const CAPACITY_NUMBERS = [0, 1, 100];
+const VALIDATION_ROOMS = ['Не для гостей', 'Не более 1 гостя'];
 
 const adForm = document.querySelector('.ad-form');
 
@@ -62,26 +65,28 @@ priceElement.addEventListener('change', (evt) => {
 }));
 
 //функция валидации поля цены за проживание
-const validatePrice = (priceValue) => (priceValue >= PriceTypes[selectedTypeElement.value]);
+const validatePrice = (priceValue) => (priceValue >= PRICE_TYPES[selectedTypeElement.value]);
 
 //функция вывода сообщения при неверно введённой цене
-const getPriceErrorMessage = () => (`Не менее ${PriceTypes[selectedTypeElement.value]} рублей`);
+const getPriceErrorMessage = () => (`Не менее ${PRICE_TYPES[selectedTypeElement.value]} рублей`);
 
 //обработчик события изменения типа проживания
 function onOptionChange() {
-  priceElement.setAttribute('placeholder', PriceTypes[this.value]);
+  priceElement.setAttribute('placeholder', PRICE_TYPES[this.value]);
   pristine.validate(priceElement);
 }
 
 //функция валидации поля количества гостей
-const validateGuestDependsOnRooms = () => (parseInt(guestsSelectedElement.value, 10) <= parseInt(roomsSelectedElement.value, 10));
+const validateGuestDependsOnRooms = () => ((parseInt(roomsSelectedElement.value, 10) !== CAPACITY_NUMBERS[2])
+&& (parseInt(guestsSelectedElement.value, 10) <= parseInt(roomsSelectedElement.value, 10))
+|| ((parseInt(roomsSelectedElement.value, 10) === CAPACITY_NUMBERS[2]) && parseInt(guestsSelectedElement.value, 10) === CAPACITY_NUMBERS[0]));
 
 //функция по выводу ошибки при несоответствии полей комнат и гостей
 const getGuestFieldErrorMessage = () => {
-  if (parseInt(roomsSelectedElement.value, 10) === 1) {
-    return 'Не более 1 гостя';
-  } else if (parseInt(roomsSelectedElement.value, 10) === 100) {
-    return 'Не для гостей';
+  if (parseInt(roomsSelectedElement.value, 10) === CAPACITY_NUMBERS[1]) {
+    return VALIDATION_ROOMS[1];
+  } else if (parseInt(roomsSelectedElement.value, 10) === CAPACITY_NUMBERS[2]) {
+    return VALIDATION_ROOMS[0];
   }
   return `Не более ${roomsSelectedElement.value} гостей`;
 };
@@ -101,6 +106,14 @@ const validateCurrentFieldValues = () => {
 //загрузка фотографий в форму
 loadPhotosIntoFrom();
 
+//очистка формы
+const clearForm = () => {
+  document.querySelector('.map__filters').reset();
+  adForm.reset();
+  resetUploadPhotos();
+  resetMap();
+};
+
 //валидация формы при отправке
 const setAdFormForSubmit = (onSuccess, getData) => {
   adForm.addEventListener('submit', (evt) => {
@@ -111,14 +124,14 @@ const setAdFormForSubmit = (onSuccess, getData) => {
       sendNewRentalAdToServer(
         () => {
           onSuccess();
-          unblockSubmitButton();
+          blockSubmitButton();
           clearForm();
           sliderPriceElement.noUiSlider.reset();
           getData();
         },
         () => {
           showErrorMessage('Не удалось разместить объявление');
-          unblockSubmitButton();
+          blockSubmitButton();
         },
         new FormData(evt.target),
       );
@@ -127,6 +140,7 @@ const setAdFormForSubmit = (onSuccess, getData) => {
 
 };
 
+//обновление страницы
 const resetPage = (getData) => {
   adForm.addEventListener('reset', () => {
     sliderPriceElement.noUiSlider.reset();

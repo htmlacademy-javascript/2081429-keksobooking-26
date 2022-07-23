@@ -5,19 +5,26 @@ import {switchToActiveState} from './util.js';
 const CENTER_POINT_LAT = 35.68944;
 const CENTER_POINT_LNG = 139.69167;
 const MAP_ZOOM = 10;
+const MAP_LINK = 'https://www.openstreetmap.org/copyright';
+const ICON_SIZES = {
+  mainHeight: 52,
+  mainWidth: 52,
+  minorHeight: 40,
+  minorWidth: 40,
+};
 
 const map = L.map('map-canvas');
 
 const mainPinIcon = L.icon({
   iconUrl: './img/main-pin.svg',
-  iconSize: [52, 52],
-  iconAnchor: [26, 52],
+  iconSize: [ICON_SIZES['mainWidth'], ICON_SIZES['mainHeight']],
+  iconAnchor: [ICON_SIZES['mainWidth']/2, ICON_SIZES['mainHeight']],
 });
 
 const pinIcon = L.icon({
   iconUrl: './img/pin.svg',
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
+  iconSize: [ICON_SIZES['minorWidth'], ICON_SIZES['minorHeight']],
+  iconAnchor: [ICON_SIZES['minorWidth']/2, ICON_SIZES['minorHeight']],
 });
 
 const markerGroupLayer = L.layerGroup().addTo(map);
@@ -37,7 +44,7 @@ const createMap = () => {
   L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      attribution: `&copy; <a href=${MAP_LINK}>OpenStreetMap</a> contributors`,
     },
   ).addTo(map);
 };
